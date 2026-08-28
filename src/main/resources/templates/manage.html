@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pl.edu.tpo_11.page.manage.title}">Manage Link</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/create" th:text="#{pl.edu.tpo_11.app.title}"></a>
+            <div class="navbar-nav ms-auto">
+                <div class="dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <span th:text="#{pl.edu.tpo_11.language.select}"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/change-lang?lang=en">English</a></li>
+                        <li><a class="dropdown-item" href="/change-lang?lang=pl">Polski</a></li>
+                        <li><a class="dropdown-item" href="/change-lang?lang=de">Deutsch</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3 th:text="#{pl.edu.tpo_11.page.manage.title}"></h3>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/manage}" method="get">
+                            <div class="row g-2">
+                                <div class="col">
+                                    <input type="text" name="name" class="form-control" th:placeholder="#{pl.edu.tpo_11.field.id}" required>
+                                </div>
+                                <div class="col">
+                                    <input type="password" name="password" class="form-control" th:placeholder="#{pl.edu.tpo_11.field.password}" required>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary" th:text="#{pl.edu.tpo_11.button.search}"></button>
+                                </div>
+                            </div>
+                            <div class="text-danger mt-2" th:if="${error}" th:text="#{error.link.notfound}"></div>
+                            <div class="alert alert-success mt-2" th:if="${success}" th:text="${success}"></div>
+                        </form>
+                    </div>
+                </div>
+
+                <div th:if="${link}">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Edit Link</h5>
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{/manage/update}" th:object="${updateRequest}" method="post">
+                                <input type="hidden" name="id" th:value="${link.id}" />
+                                <input type="hidden" name="originalPassword" th:value="${link.password}" />
+
+                                <div class="mb-3">
+                                    <label for="name" class="form-label" th:text="#{pl.edu.tpo_11.field.name}"></label>
+                                    <input id="name" type="text" class="form-control"
+                                           th:field="*{name}"/>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}">
+                                        <span th:each="err : ${#fields.errors('name')}" th:text="${err}"></span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="targetUrl" class="form-label" th:text="#{pl.edu.tpo_11.field.url}"></label>
+                                    <input id="targetUrl" type="text" class="form-control"
+                                           th:field="*{targetUrl}"/>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('targetUrl')}">
+                                        <span th:each="err : ${#fields.errors('targetUrl')}" th:text="${err}"></span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" th:text="#{pl.edu.tpo_11.field.visits}"></label>
+                                    <input type="text" class="form-control" th:value="${link.visits}" disabled />
+                                </div>
+
+                                <button type="submit" class="btn btn-success me-2" th:text="#{pl.edu.tpo_11.button.update}"></button>
+                            </form>
+
+                            <form th:action="@{/manage/delete}" method="post" class="mt-2">
+                                <input type="hidden" name="id" th:value="${link.id}" />
+                                <input type="hidden" name="password" th:value="${link.password}" />
+                                <button type="submit" class="btn btn-danger" th:text="#{pl.edu.tpo_11.button.delete}"></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
