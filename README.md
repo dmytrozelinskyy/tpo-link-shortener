@@ -1,6 +1,6 @@
 # TPO Link Shortener
 
-A URL shortener built with **Spring Boot*, offering both a REST API and a simple web UI. Users can generate short, unique links for long URLs, optionally protect them with a password, and track visit counts.
+A URL shortener built with **Spring Boot**, offering both a REST API and a simple web UI. Users can generate short, unique links for long URLs, optionally protect them with a password, and track visit counts.
 
 ## Features
 
